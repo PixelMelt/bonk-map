@@ -212,10 +212,7 @@ export interface MapData {
 	metadata: MapMetadata;
 }
 
-export type ValidationSeverity = 'error' | 'warning';
-
 export interface ValidationIssue {
-	severity: ValidationSeverity;
 	path: string;
 	message: string;
 	value?: unknown;

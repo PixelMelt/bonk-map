@@ -70,9 +70,9 @@ import { validateMap, decodeAndValidate } from 'bonk-map';
 // Validate a MapData object
 const result = validateMap(map);
 if (!result.valid) {
-  for (const issue of result.issues) {
-    console.log(`${issue.severity} ${issue.path}: ${issue.message}`);
-  }
+	for (const issue of result.issues) {
+		console.log(`${issue.path}: ${issue.message}`);
+	}
 }
 
 // Decode and validate in one step
@@ -83,14 +83,14 @@ Section-level validators are also available:
 
 ```ts
 import {
-  validateShapes,
-  validateFixtures,
-  validateBodies,
-  validateJoints,
-  validateSpawns,
-  validateCapZones,
-  validateMetadata,
-  validatePhysics,
+	validateShapes,
+	validateFixtures,
+	validateBodies,
+	validateJoints,
+	validateSpawns,
+	validateCapZones,
+	validateMetadata,
+	validatePhysics,
 } from 'bonk-map';
 
 validateShapes(map.physics.shapes);
@@ -109,27 +109,27 @@ Create new map objects with sensible defaults.
 
 ```ts
 import {
-  getBlankMap,
-  getNewBody,
-  getNewFixture,
-  getNewBoxShape,
-  getNewCircleShape,
-  getNewPolyShape,
-  getNewChainShape,
-  getNewRevoluteJoint,
-  getNewDistanceJoint,
-  getNewLPJJoint,
-  getNewLSJJoint,
-  getNewGearJoint,
-  getNewCapZone,
-  getNewSpawn,
+	getBlankMap,
+	getNewBody,
+	getNewFixture,
+	getNewBoxShape,
+	getNewCircleShape,
+	getNewPolyShape,
+	getNewChainShape,
+	getNewRevoluteJoint,
+	getNewDistanceJoint,
+	getNewLPJJoint,
+	getNewLSJJoint,
+	getNewGearJoint,
+	getNewCapZone,
+	getNewSpawn,
 } from 'bonk-map';
 
 const map = getBlankMap();
 
-const shape = getNewBoxShape();         // { type: 'bx', width: 10, height: 40, ... }
-const fixture = getNewFixture(0);       // references shape index 0
-const body = getNewBody();              // static body at origin
+const shape = getNewBoxShape(); // { type: 'bx', width: 10, height: 40, ... }
+const fixture = getNewFixture(0); // references shape index 0
+const body = getNewBody(); // static body at origin
 body.fixtureIndices = [0];
 
 map.physics.shapes.push(shape);
@@ -146,7 +146,7 @@ bonk.io uses short single/two-character keys internally. `expandMap` converts sh
 ```ts
 import { expandMap, compactMap, NAME_MAPS } from 'bonk-map';
 
-const expanded = expandMap(compactObject);   // { n: "foo" } -> { name: "foo" }
+const expanded = expandMap(compactObject); // { n: "foo" } -> { name: "foo" }
 const compacted = compactMap(expandedObject); // { name: "foo" } -> { n: "foo" }
 ```
 
@@ -156,32 +156,31 @@ All interfaces are exported for use in TypeScript:
 
 ```ts
 import type {
-  MapData,
-  MapPhysics,
-  MapMetadata,
-  MapProperties,
-  MapShape,
-  MapBoxShape,
-  MapCircleShape,
-  MapPolyShape,
-  MapChainShape,
-  MapFixture,
-  MapBody,
-  MapBodyForce,
-  MapBodyForceZone,
-  MapBodySettings,
-  MapJoint,
-  MapJointProperties,
-  MapSpawn,
-  MapCapZone,
-  ValidationResult,
-  ValidationIssue,
-  ValidationSeverity,
-  MapRendererOptions,
-  RenderToBufferOptions,
+	MapData,
+	MapPhysics,
+	MapMetadata,
+	MapProperties,
+	MapShape,
+	MapBoxShape,
+	MapCircleShape,
+	MapPolyShape,
+	MapChainShape,
+	MapFixture,
+	MapBody,
+	MapBodyForce,
+	MapBodyForceZone,
+	MapBodySettings,
+	MapJoint,
+	MapJointProperties,
+	MapSpawn,
+	MapCapZone,
+	ValidationResult,
+	ValidationIssue,
+	MapRendererOptions,
+	RenderToBufferOptions,
 } from 'bonk-map';
 ```
 
 ## License
 
-MIT
+GPL3

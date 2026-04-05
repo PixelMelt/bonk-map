@@ -8,7 +8,6 @@ import type {
 	MapCapZone,
 	MapMetadata,
 	MapPhysics,
-	ValidationSeverity,
 	ValidationIssue,
 	ValidationResult,
 } from './types/types';
@@ -20,13 +19,12 @@ const JOINT_TYPES = ['rv', 'd', 'lpj', 'lsj', 'g'];
 const SHAPE_TYPES = ['bx', 'ci', 'po', 'ch'];
 
 function issue(
-	severity: ValidationSeverity,
 	path: string,
 	message: string,
 	value?: unknown,
 	constraint?: ValidationIssue['constraint'],
 ): ValidationIssue {
-	return { severity, path, message, value, constraint };
+	return { path, message, value, constraint };
 }
 
 function checkRange(
@@ -37,12 +35,12 @@ function checkRange(
 	max: number,
 ): void {
 	if (typeof value !== 'number' || Number.isNaN(value)) {
-		issues.push(issue('error', path, `expected a number, got ${typeof value}`, value));
+		issues.push(issue(path, `expected a number, got ${typeof value}`, value));
 		return;
 	}
 	if (value < min || value > max) {
 		issues.push(
-			issue('error', path, `must be in [${min}, ${max}], got ${value}`, value, { min, max }),
+			issue(path, `must be in [${min}, ${max}], got ${value}`, value, { min, max }),
 		);
 	}
 }
@@ -54,18 +52,14 @@ function checkMaxLength(
 	maxLength: number,
 ): void {
 	if (typeof value !== 'string') {
-		issues.push(issue('error', path, `expected a string, got ${typeof value}`, value));
+		issues.push(issue(path, `expected a string, got ${typeof value}`, value));
 		return;
 	}
 	if (value.length > maxLength) {
 		issues.push(
-			issue(
-				'error',
-				path,
-				`must be at most ${maxLength} characters, got ${value.length}`,
-				value,
-				{ maxLength },
-			),
+			issue(path, `must be at most ${maxLength} characters, got ${value.length}`, value, {
+				maxLength,
+			}),
 		);
 	}
 }
@@ -84,27 +78,20 @@ function checkIndex(
 			? `[-1, ${arrayLength - 1}] (-1 = ground)`
 			: `[0, ${arrayLength - 1}]`;
 		issues.push(
-			issue(
-				'error',
-				path,
-				`references ${arrayName} index ${value}, valid range is ${rangeDesc}`,
-				value,
-			),
+			issue(path, `references ${arrayName} index ${value}, valid range is ${rangeDesc}`, value),
 		);
 	}
 }
 
 function checkCount(issues: ValidationIssue[], path: string, count: number, max: number): void {
 	if (count > max) {
-		issues.push(
-			issue('error', path, `count ${count} exceeds maximum of ${max}`, count, { max }),
-		);
+		issues.push(issue(path, `count ${count} exceeds maximum of ${max}`, count, { max }));
 	}
 }
 
 function toResult(issues: ValidationIssue[]): ValidationResult {
 	return {
-		valid: issues.every((i) => i.severity !== 'error'),
+		valid: issues.length === 0,
 		issues,
 	};
 }
@@ -135,7 +122,7 @@ function _validateShapes(shapes: MapShape[], issues: ValidationIssue[]): void {
 			}
 		} else {
 			issues.push(
-				issue('error', `${p}.type`, `unknown shape type`, (s as MapShape).type, {
+				issue(`${p}.type`, `unknown shape type`, (s as MapShape).type, {
 					oneOf: SHAPE_TYPES,
 				}),
 			);
@@ -189,7 +176,6 @@ function _validateBodies(bodies: MapBody[], fixtureCount: number, issues: Valida
 		if (!BODY_TYPES.includes(b.settings.type)) {
 			issues.push(
 				issue(
-					'error',
 					`${p}.settings.type`,
 					`must be one of "s", "d", "k", got "${b.settings.type}"`,
 					b.settings.type,
@@ -214,7 +200,6 @@ function _validateBodies(bodies: MapBody[], fixtureCount: number, issues: Valida
 		if (b.forceZone.enabled && !FORCE_TYPES.includes(b.forceZone.forceType)) {
 			issues.push(
 				issue(
-					'error',
 					`${p}.forceZone.forceType`,
 					`must be one of 0, 1, 2, 3, got ${b.forceZone.forceType}`,
 					b.forceZone.forceType,
@@ -239,7 +224,7 @@ function _validateJoints(
 
 		if (!JOINT_TYPES.includes(j.type)) {
 			issues.push(
-				issue('error', `${p}.type`, `unknown joint type "${j.type}"`, j.type, {
+				issue(`${p}.type`, `unknown joint type "${j.type}"`, j.type, {
 					oneOf: JOINT_TYPES,
 				}),
 			);

@@ -51,7 +51,6 @@ export type {
 	MapJointProperties,
 	MapSpawn,
 	MapCapZone,
-	ValidationSeverity,
 	ValidationIssue,
 	ValidationResult,
 } from './types/types';
