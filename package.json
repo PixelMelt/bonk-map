@@ -1,36 +1,37 @@
 {
-	"name": "bonk-map",
-	"version": "0.1.0",
-	"description": "Encode and decode bonk.io maps",
-	"author": "Pixelmelt",
-	"type": "module",
-	"main": "dist/index.js",
-	"module": "dist/index.js",
-	"types": "dist/index.d.ts",
-	"exports": {
-		".": {
-			"import": "./dist/index.js",
-			"types": "./dist/index.d.ts"
-		}
-	},
-	"files": [
-		"dist"
-	],
-	"scripts": {
-		"build": "bun build ./src/index.ts --outdir ./dist --target browser --format esm --external pixi.js --external @napi-rs/canvas && tsc -p tsconfig.build.json",
-		"test": "bun test",
-		"check": "tsc --noEmit"
-	},
-	"dependencies": {
-		"@napi-rs/canvas": "^0.1.97",
-		"lz-string": "^1.5.0",
-		"pixi.js": "^7"
-	},
-	"devDependencies": {
-		"@types/bun": "latest",
-		"typescript": "^6"
-	},
-	"peerDependencies": {
-		"typescript": "^6"
-	}
+  "name": "bonk-map",
+  "version": "0.1.0",
+  "description": "Encode and decode bonk.io maps",
+  "author": "Pixelmelt",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir ./dist --target browser --format cjs --external pixi.js --external @napi-rs/canvas && mv dist/index.js dist/index.cjs && bun build ./src/index.ts --outdir ./dist --target browser --format esm --external pixi.js --external @napi-rs/canvas && tsc -p tsconfig.build.json",
+    "test": "bun test",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@napi-rs/canvas": "^0.1.97",
+    "lz-string": "^1.5.0",
+    "pixi.js": "^7"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^6"
+  },
+  "peerDependencies": {
+    "typescript": "^6"
+  }
 }
