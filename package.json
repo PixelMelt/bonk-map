@@ -1,6 +1,6 @@
 {
 	"name": "bonk-map",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Encode and decode bonk.io maps",
 	"author": "Pixelmelt",
 	"type": "module",
@@ -9,29 +9,55 @@
 	"types": "./dist/index.d.ts",
 	"exports": {
 		".": {
+			"browser": {
+				"types": "./dist/index.browser.d.ts",
+				"import": "./dist/index.browser.js",
+				"require": "./dist/index.browser.cjs"
+			},
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js",
 			"require": "./dist/index.cjs"
+		},
+		"./node": {
+			"types": "./dist/index.node.d.ts",
+			"import": "./dist/index.node.js",
+			"require": "./dist/index.node.cjs"
 		}
 	},
 	"files": [
 		"dist"
 	],
 	"scripts": {
-		"build": "bun build ./src/index.ts --outdir ./dist --target browser --format cjs --external pixi.js --external @napi-rs/canvas && mv dist/index.js dist/index.cjs && bun build ./src/index.ts --outdir ./dist --target browser --format esm --external pixi.js --external @napi-rs/canvas && tsc -p tsconfig.build.json",
+		"build": "bun run build:cjs && bun run build:esm && bun run build:browser-cjs && bun run build:browser-esm && bun run build:node-cjs && bun run build:node-esm && tsc -p tsconfig.build.json",
+		"build:cjs": "bun build ./src/index.ts --outdir ./dist --target browser --format cjs --external pixi.js --external @napi-rs/canvas && mv dist/index.js dist/index.cjs",
+		"build:esm": "bun build ./src/index.ts --outdir ./dist --target browser --format esm --external pixi.js --external @napi-rs/canvas",
+		"build:browser-cjs": "bun build ./src/index.browser.ts --outdir ./dist --target browser --format cjs --external pixi.js && mv dist/index.browser.js dist/index.browser.cjs",
+		"build:browser-esm": "bun build ./src/index.browser.ts --outdir ./dist --target browser --format esm --external pixi.js",
+		"build:node-cjs": "bun build ./src/index.node.ts --outdir ./dist --target node --format cjs --external @napi-rs/canvas && mv dist/index.node.js dist/index.node.cjs",
+		"build:node-esm": "bun build ./src/index.node.ts --outdir ./dist --target node --format esm --external @napi-rs/canvas",
 		"test": "bun test",
 		"check": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@napi-rs/canvas": "^0.1.97",
-		"lz-string": "^1.5.0",
-		"pixi.js": "^7"
+		"lz-string": "^1.5.0"
+	},
+	"optionalDependencies": {
+		"@napi-rs/canvas": "^0.1.97"
+	},
+	"peerDependencies": {
+		"pixi.js": "^7",
+		"typescript": "^6"
+	},
+	"peerDependenciesMeta": {
+		"pixi.js": {
+			"optional": true
+		},
+		"typescript": {
+			"optional": true
+		}
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
-		"typescript": "^6"
-	},
-	"peerDependencies": {
 		"typescript": "^6"
 	}
 }
