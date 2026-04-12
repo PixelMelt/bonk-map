@@ -1,4 +1,4 @@
-export { encodeToDatabase, decodeFromDatabase } from './map';
+export { encodeToDatabase, decodeFromDatabase, decodeFromDatabaseCompact } from './map';
 export { MapRenderer } from './render/index';
 export type { MapRendererOptions } from './render/index';
 export { renderToBuffer } from './render/offscreen';
@@ -53,4 +53,22 @@ export type {
 	MapCapZone,
 	ValidationIssue,
 	ValidationResult,
+	MapDataCompact,
+	MapPhysicsCompact,
+	MapPropertiesCompact,
+	MapMetadataCompact,
+	MapShapeCompact,
+	MapBoxShapeCompact,
+	MapCircleShapeCompact,
+	MapPolyShapeCompact,
+	MapChainShapeCompact,
+	MapFixtureCompact,
+	MapBodyCompact,
+	MapBodyForceCompact,
+	MapBodyForceZoneCompact,
+	MapBodySettingsCompact,
+	MapJointCompact,
+	MapJointPropertiesCompact,
+	MapSpawnCompact,
+	MapCapZoneCompact,
 } from './types/types';

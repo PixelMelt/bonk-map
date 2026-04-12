@@ -1,6 +1,7 @@
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from 'lz-string';
 import { byteBuffer } from './util/byteBuffer';
-import type { MapData, MapJoint } from './types/types';
+import type { MapData, MapDataCompact, MapJoint } from './types/types';
+import { compactMap } from './util/nameConverter';
 import {
 	getBlankMap,
 	getNewBody,
@@ -565,4 +566,9 @@ export function decodeFromDatabase(encodedString: string): MapData {
 	}
 
 	return map;
+}
+
+export function decodeFromDatabaseCompact(encodedString: string): MapDataCompact {
+	const map = decodeFromDatabase(encodedString);
+	return compactMap(map as unknown as Record<string, unknown>) as unknown as MapDataCompact;
 }
