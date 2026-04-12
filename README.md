@@ -8,6 +8,8 @@ Encode, decode, validate, and render [bonk.io](https://bonk.io) maps.
 npm install bonk-map
 ```
 
+Browser bundlers automatically get a build that excludes the Node.js-only `renderToBuffer` function, so `@napi-rs/canvas` is never pulled into your browser bundle.
+
 ## Encoding & Decoding
 
 Convert between the bonk.io database string format and a typed `MapData` object.
@@ -21,11 +23,26 @@ console.log(map.metadata.name);
 const encoded = encodeToDatabase(map);
 ```
 
+### Compact format
+
+`decodeFromDatabase` returns friendly field names (`width`, `shapeIndex`, `pixelsPerMeter`, etc.). If you need the game's original compact names (`w`, `sh`, `ppm`, etc.), use `decodeFromDatabaseCompact`:
+
+```ts
+import { decodeFromDatabaseCompact } from 'bonk-map';
+
+const map = decodeFromDatabaseCompact(databaseString);
+map.physics.ppm;
+map.s.re;
+map.m.n;
+```
+
+This returns a typed `MapDataCompact` with all the compact type variants (`MapBodyCompact`, `MapFixtureCompact`, etc.).
+
 ## Rendering
 
 ### Server-side (Node / Bun)
 
-`renderToBuffer` uses `@napi-rs/canvas` to produce a PNG buffer without a browser.
+`renderToBuffer` uses `@napi-rs/canvas` to produce a PNG buffer without a browser. It is only available in Node.js/Bun.
 
 ```ts
 import { decodeFromDatabase, renderToBuffer } from 'bonk-map';
@@ -37,6 +54,12 @@ writeFileSync('map.png', png);
 
 // Custom resolution
 const small = renderToBuffer(map, { width: 365, height: 250 });
+```
+
+You can also import it explicitly from the `bonk-map/node` sub-path:
+
+```ts
+import { renderToBuffer } from 'bonk-map/node';
 ```
 
 ### Browser (PIXI.js)
@@ -152,9 +175,10 @@ const compacted = compactMap(expandedObject); // { name: "foo" } -> { n: "foo" }
 
 ## Types
 
-All interfaces are exported for use in TypeScript:
+All interfaces are exported for use in TypeScript. Both expanded and compact type variants are available:
 
 ```ts
+// Expanded types
 import type {
 	MapData,
 	MapPhysics,
@@ -178,6 +202,28 @@ import type {
 	ValidationIssue,
 	MapRendererOptions,
 	RenderToBufferOptions,
+} from 'bonk-map';
+
+// Compact types
+import type {
+	MapDataCompact,
+	MapPhysicsCompact,
+	MapMetadataCompact,
+	MapPropertiesCompact,
+	MapShapeCompact,
+	MapBoxShapeCompact,
+	MapCircleShapeCompact,
+	MapPolyShapeCompact,
+	MapChainShapeCompact,
+	MapFixtureCompact,
+	MapBodyCompact,
+	MapBodyForceCompact,
+	MapBodyForceZoneCompact,
+	MapBodySettingsCompact,
+	MapJointCompact,
+	MapJointPropertiesCompact,
+	MapSpawnCompact,
+	MapCapZoneCompact,
 } from 'bonk-map';
 ```
 
