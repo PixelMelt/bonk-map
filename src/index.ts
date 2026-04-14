@@ -1,4 +1,5 @@
 export { encodeToDatabase, decodeFromDatabase, decodeFromDatabaseCompact } from './map';
+export { encodeState, decodeState, encodeInputs, decodeInputs } from './stateCodec';
 export { MapRenderer } from './render/index';
 export type { MapRendererOptions } from './render/index';
 export { renderToBuffer } from './render/offscreen';
