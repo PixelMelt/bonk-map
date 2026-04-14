@@ -1,6 +1,6 @@
 {
 	"name": "bonk-map",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"description": "Encode and decode bonk.io maps",
 	"author": "Pixelmelt",
 	"type": "module",
@@ -29,12 +29,12 @@
 	],
 	"scripts": {
 		"build": "bun run build:cjs && bun run build:esm && bun run build:browser-cjs && bun run build:browser-esm && bun run build:node-cjs && bun run build:node-esm && tsc -p tsconfig.build.json",
-		"build:cjs": "bun build ./src/index.ts --outdir ./dist --target browser --format cjs --external pixi.js --external @napi-rs/canvas && mv dist/index.js dist/index.cjs",
-		"build:esm": "bun build ./src/index.ts --outdir ./dist --target browser --format esm --external pixi.js --external @napi-rs/canvas",
+		"build:cjs": "bun build ./src/index.ts --outdir ./dist --target browser --format cjs --external pixi.js --external @napi-rs/canvas --external pson --external bytebuffer --external lz-string && mv dist/index.js dist/index.cjs",
+		"build:esm": "bun build ./src/index.ts --outdir ./dist --target browser --format esm --external pixi.js --external @napi-rs/canvas --external pson --external bytebuffer --external lz-string",
 		"build:browser-cjs": "bun build ./src/index.browser.ts --outdir ./dist --target browser --format cjs --external pixi.js && mv dist/index.browser.js dist/index.browser.cjs",
 		"build:browser-esm": "bun build ./src/index.browser.ts --outdir ./dist --target browser --format esm --external pixi.js",
-		"build:node-cjs": "bun build ./src/index.node.ts --outdir ./dist --target node --format cjs --external @napi-rs/canvas && mv dist/index.node.js dist/index.node.cjs",
-		"build:node-esm": "bun build ./src/index.node.ts --outdir ./dist --target node --format esm --external @napi-rs/canvas",
+		"build:node-cjs": "bun build ./src/index.node.ts --outdir ./dist --target node --format cjs --external @napi-rs/canvas --external pson --external bytebuffer --external lz-string && mv dist/index.node.js dist/index.node.cjs",
+		"build:node-esm": "bun build ./src/index.node.ts --outdir ./dist --target node --format esm --external @napi-rs/canvas --external pson --external bytebuffer --external lz-string",
 		"test": "bun test",
 		"check": "tsc --noEmit"
 	},
